@@ -1,6 +1,7 @@
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:flutter/services.dart' show rootBundle;
 import 'dart:io';
 
 class DatabaseHelper {
@@ -20,27 +21,20 @@ class DatabaseHelper {
     final Directory documentsDirectory =
         await getApplicationDocumentsDirectory();
     final path = join(documentsDirectory.path, fileName);
-    print('📁 Caminho do banco de dados: $path'); // Adicione isso aqui
-
+    print('📁 Caminho do banco de dados: $path');
     return await openDatabase(path, version: 1, onCreate: _onCreate);
   }
 
   Future<void> _onCreate(Database db, int version) async {
-    // Tabela cadastro com numero como PRIMARY KEY
-    await db.execute('''
-      CREATE TABLE cadastro (
-        nome TEXT NOT NULL,
-        numero INTEGER PRIMARY KEY CHECK(numero > 0)
-      );
-    ''');
+    // Ler o arquivo SQL
+    String schema = await rootBundle.loadString('assets/database/schema.sql');
 
-    // Tabela de log
-    await db.execute('''
-      CREATE TABLE log_operacoes (
-        data_hora TEXT NOT NULL,
-        operacao TEXT NOT NULL
-      );
-    ''');
+    // Executar cada comando separado por ";"
+    for (String command in schema.split(';')) {
+      if (command.trim().isNotEmpty) {
+        await db.execute(command);
+      }
+    }
   }
 
   Future<void> insertCadastro(String nome, int numero) async {
