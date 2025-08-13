@@ -21,7 +21,14 @@ Este é um aplicativo Flutter desenvolvido para gerenciar cadastros com funciona
 - Editor de código (recomendado: [Visual Studio Code](https://code.visualstudio.com/) com extensões Flutter e Dart).
 - Configuração do ambiente para desktop (opcional, para Windows, Linux ou macOS).
 
-### Configuração para Desktop (Windows)
-1. Habilite o suporte a desktop no Flutter:
+## Instalação
+1. Clone o repositório:
    ```bash
-   flutter config --enable-windows-desktop
+   git clone <URL_DO_REPOSITÓRIO>
+   cd <nome_do_projeto>
+2. Baixe os pacotes necessários:
+   ```bash
+   flutter pub get
+3. Execute o aplicativo:
+   ```bash
+   flutter run
